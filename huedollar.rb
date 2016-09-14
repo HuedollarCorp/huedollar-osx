@@ -1,29 +1,45 @@
 class Huedollar < Formula
+  attr_accessor :interval
+
   desc "Dollar conversion rates on your notifications"
   homepage ""
-  url "https://github.com/alansikora/huedollar/archive/0.3.tar.gz"
-  version "0.3"
-  sha256 "5c5789847bf1fd813ef32a592327caa1309487fa8beccce75bf8908aef22aea0"
+  url "https://github.com/alansikora/huedollar/archive/0.3.1.tar.gz"
+  version "0.3.1"
+  sha256 "b74730d1c66ec37f7bf71e33e6c4ee845eae3bb6cd0e36a039195db0385bc994"
 
   depends_on "jq"
 
+  option "with-15s-interval"
+  option "with-15m-interval"
+  option "with-30m-interval"
+  option "with-60m-interval"
+
   def install
-    # (libexec/"zeronet").install Dir["*"]
-    # (bin/"zeronet").write <<-EOS.undent
-    #   #!/usr/bin/env bash
-    #   cd #{libexec}/zeronet/
-    #   env PYTHONPATH=#{libexec}/vendor/lib/python2.7/site-packages:${PYTHONPATH} python zeronet.py "${@}"
-    # EOS
+    self.interval = 15 * 60 # defaults to 15 minutes
+
+    if build.with? "15s-interval"
+      self.interval = 15
+    end
+
+    if build.with? "15m-interval"
+      self.interval = 15 * 60
+    end
+
+    if build.with? "30m-interval"
+      self.interval = 30 * 60
+    end
+
+    if build.with? "60m-interval"
+      self.interval = 60 * 60
+    end
 
     (prefix).install "huedollar.sh"
 
-    (buildpath/"huedollar-stash").write <<-EOS.undent
+    (prefix/"huedollar-stash").write <<-EOS.undent
       LAST_DAY_DOLLAR=0.0000
       OLD_DOLLAR_B=0.0000
       OLD_DOLLAR_A=0.0000
     EOS
-
-    sdasda123
   end
 
   plist_options :startup => true
@@ -46,7 +62,7 @@ class Huedollar < Formula
         </array>
 
         <key>StartInterval</key>
-        <integer>15</integer>
+        <integer>#{self.interval}</integer>
     </dict>
     </plist>
     EOS

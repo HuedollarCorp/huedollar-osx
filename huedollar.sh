@@ -13,19 +13,23 @@ remove_variable() {
   sed -i.bak "/^$1=/d" huedollar-stash
 }
 
+LAST_DAY_DOLLAR=`get_variable 'LAST_DAY_DOLLAR'`
+OLD_DOLLAR_A=`get_variable 'OLD_DOLLAR_A'`
+OLD_DOLLAR_B=`get_variable 'OLD_DOLLAR_B'`
+
 # Check if should run
 WEEKDAY=`date +%u`
 HOUR=`date +%-H`
 MIN=`date +%-M`
-[ $WEEKDAY -eq 0 -o $WEEKDAY -eq 7 ] && exit
-[ $HOUR -le 8 -o $HOUR -eq 9 -a $MIN -le 0 ] && exit
-[ $HOUR -ge 18 -o $HOUR -eq 17 -a $MIN -ge 20 ] && exit
+
+if [ "$LAST_DAY_DOLLAR" != "0.0000" ];
+then
+  [ $WEEKDAY -eq 0 -o $WEEKDAY -eq 7 ] && exit
+  [ $HOUR -le 8 -o $HOUR -eq 9 -a $MIN -le 0 ] && exit
+  [ $HOUR -ge 18 -o $HOUR -eq 17 -a $MIN -ge 20 ] && exit
+fi
 
 DOLLAR=`curl -s 'http://api.promasters.net.br/cotacao/v1/valores?moedas=USD&alt=json' | /usr/local/bin/jq -r '.valores.USD.valor'`
-
-LAST_DAY_DOLLAR=`get_variable 'LAST_DAY_DOLLAR'`
-OLD_DOLLAR_A=`get_variable 'OLD_DOLLAR_A'`
-OLD_DOLLAR_B=`get_variable 'OLD_DOLLAR_B'`
 
 if [ $DOLLAR == $OLD_DOLLAR_A ]; then
   OLD_DOLLAR=$OLD_DOLLAR_B
