@@ -1,13 +1,11 @@
 class Huedollar < Formula
-  desc "Get's dollar conversion rates on your notifications"
+  desc "Dollar conversion rates on your notifications"
   homepage ""
-  url "https://github.com/alansikora/huedollar/archive/0.1.tar.gz"
-  version "0.1"
-  sha256 "d1103be48e44dd1728890f76030d1e1f5ab69aa81cb05e0340c9f9b002cbf5f0"
+  url "https://github.com/alansikora/huedollar/archive/0.3.tar.gz"
+  version "0.3"
+  sha256 "5c5789847bf1fd813ef32a592327caa1309487fa8beccce75bf8908aef22aea0"
 
   depends_on "jq"
-
-  option "interval", "Overrides default interval, which is 30 minutes"
 
   def install
     # (libexec/"zeronet").install Dir["*"]
@@ -17,12 +15,13 @@ class Huedollar < Formula
     #   env PYTHONPATH=#{libexec}/vendor/lib/python2.7/site-packages:${PYTHONPATH} python zeronet.py "${@}"
     # EOS
 
-    puts options
-
     (prefix).install "huedollar.sh"
 
-    system "touch", "#{prefix}/dollar.txt"
-    system "touch", "#{prefix}/last_day_dollar.txt"
+    (buildpath/"huedollar-stash").write <<-EOS.undent
+      LAST_DAY_DOLLAR=0.0000
+      OLD_DOLLAR_B=0.0000
+      OLD_DOLLAR_A=0.0000
+    EOS
 
     sdasda123
   end

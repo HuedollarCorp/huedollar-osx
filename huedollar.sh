@@ -1,16 +1,16 @@
 #!/bin/bash
 
 get_variable() {
-  cat $HOME/.huedollar | grep -w $1 | cut -d'=' -f2
+  cat huedollar-stash | grep -w $1 | cut -d'=' -f2
 }
 
 set_variable() {
   remove_variable $1
-  echo $1=$2 >> $HOME/.huedollar
+  echo $1=$2 >> huedollar-stash
 }
 
 remove_variable() {
-  sed -i.bak "/^$1=/d" $HOME/.huedollar
+  sed -i.bak "/^$1=/d" huedollar-stash
 }
 
 # Check if should run
@@ -36,7 +36,7 @@ else
   set_variable OLD_DOLLAR_A $DOLLAR
 fi
 
-if [ $HOUR \> 5 ];
+if [ $HOUR -ge 17 ];
 then
     set_variable LAST_DAY_DOLLAR $DOLLAR
 fi
@@ -65,7 +65,7 @@ then
     LAST_DAY_SYMBOL="="
 fi
 
-if [ $OLD_DOLLAR \> 0 ];
+if [ $OLD_DOLLAR != "0.0000" ];
 then
   VARIATION=`awk -v t1="$OLD_DOLLAR" -v t2="$DOLLAR" 'BEGIN{printf " (%.2f%%)", (t2-t1)/t1 * 100}'`
 else
