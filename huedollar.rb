@@ -3,9 +3,9 @@ class Huedollar < Formula
 
   desc "Dollar conversion rates on your notifications"
   homepage ""
-  url "https://github.com/alansikora/huedollar/archive/v1.0.1.tar.gz"
-  version "1.0.1"
-  sha256 "0a6bd148e9adde556a1a19f9832461efb49e20fe348de11224234f89b760abe8"
+  url "https://github.com/alansikora/huedollar/archive/v1.0.2.tar.gz"
+  version "1.0.2"
+  sha256 "a8d0520c6075fd4773a58ada5be3f64feb5bbca5db81e97bf7274e01d4a773fe"
 
   depends_on "jq"
 
@@ -18,6 +18,7 @@ class Huedollar < Formula
         OLD_DOLLAR_B=0.0000
         OLD_DOLLAR_A=0.0000
       EOS
+    end
   end
 
   plist_options :startup => true
@@ -47,15 +48,6 @@ class Huedollar < Formula
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test huedollar`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
     system "false"
   end
 end
