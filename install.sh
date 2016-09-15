@@ -13,6 +13,10 @@ sed "s/interval-placeholder/$INTERVAL/g" huedollar-template.rb > huedollar.rb
 
 echo ""
 
+brew tap homebrew/services
+
+echo ""
+
 brew install huedollar.rb
 
 echo ""
