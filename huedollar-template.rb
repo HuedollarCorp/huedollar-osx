@@ -10,6 +10,12 @@ class Huedollar < Formula
   depends_on "jq"
 
   def install
+    puts ""
+    puts "************"
+    puts "Para modificar o valor do dólar de ontem, altere este arquivo: #{prefix/'huedollar-stash'}"
+    puts "************"
+    puts ""
+
     (prefix).install "huedollar.sh"
 
     unless File.file?(prefix/"huedollar-stash")
@@ -34,6 +40,9 @@ class Huedollar < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
 
+        <key>RunAtLoad</key>
+        <true/>
+
         <key>ProgramArguments</key>
         <array>
             <string>/bin/bash</string>
@@ -41,7 +50,7 @@ class Huedollar < Formula
         </array>
 
         <key>StartInterval</key>
-        <integer>600</integer>
+        <integer>interval-placeholder</integer>
     </dict>
     </plist>
     EOS
